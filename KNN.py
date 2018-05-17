@@ -14,17 +14,26 @@ def ima2vector(filename):
     return vct
 
 def classify(inx,dataSet,iabels,k):
+    # get the size
     dataSetSize = dataSet.shape[0]
+    # Matrix operation, calculating the difference between the test data and the corresponding data item for each sample data
     diffMat = np.tile(inx,(dataSetSize,1)) - dataSet
+    # compute the sum of the square
     sqdiffMat = diffMat**2
     sqDistance = sqdiffMat.sum(axis=1)
+    # get the distance vector
     distances = sqDistance**0.5
+    # sorted by distance
     sortedDis = distances.argsort()
     classcount = {}
     for i in range(k):
+        # get the label
         thelabel = labels[sortedDis]
+        # strore the times every label appear
         classcount[thelabel] = classcount.get(thelabel,0)+1
+        # sorted by frequency of occurence
     sortedClassCount = sorted(classcount.items(), key=operator.itemgetter(1), reverse=True)
+    # return the label of highest frequency
     return sortedClassCount[0][0]
 
 
